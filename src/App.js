@@ -6,6 +6,7 @@ import "./App.css";
 class App extends Component {
   state = {
     myLocations: "",
+    searchError: "",
     searchResult: ""
   };
   componentDidMount() {
@@ -15,16 +16,24 @@ class App extends Component {
   onSubmit = searchQuery => {
     if (searchQuery) {
       this.fetchCurrentWeather(searchQuery);
+    } else {
     }
   };
   fetchCurrentWeather = location => {
     const APIKey = "ed63ab6e517fbb4dbbf4444d70356ca0";
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${APIKey}`
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${APIKey}&units=metric`
     )
       .then(res => res.json())
       .then(result => {
-        console.log(result);
+        if (result.cod === "404") {
+          this.setState({
+            searchError: "City not found, check the input and try again."
+          });
+        } else console.log(result);
+        this.setState({
+          searchResult: result
+        });
       });
   };
   fetchWeatherForecast = location => {};
@@ -36,9 +45,13 @@ class App extends Component {
           <Navigation />
         </header>
         <div className="indexBody">
-          {!savedLocations && <h1>Add a City!</h1>}
+          {!savedLocations && <h1>Search for a City!</h1>}
           <SearchForm handleSubmit={this.onSubmit} />
-          <h2>{this.state.searchResult}</h2>
+          {this.state.searchError ? (
+            <h2>{this.state.searchError}</h2>
+          ) : (
+            <h2>{this.state.searchResult.name}</h2>
+          )}
         </div>
       </div>
     );

@@ -9,6 +9,7 @@ export default class SearchForm extends Component {
       <div className="searchForm">
         <input
           type="text"
+          placeholder="City"
           onChange={event => this.setState({ searchQuery: event.target.value })}
         />
         <button onClick={() => this.props.handleSubmit(this.state.searchQuery)}>
