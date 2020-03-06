@@ -1,30 +1,48 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import AddLocation from "./pages/AddLocation";
+import Navigation from "./components/Navigation";
+import SearchForm from "./components/SearchForm";
 import "./App.css";
 
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/Add-Location">Add Location</Link>
-          </nav>
-          <Switch>
-            <Route exact path="/">
-              <h1>INDEX</h1>
-            </Route>
-            <Route
-              path="/Add-Location"
-              component={props => <AddLocation {...props} />}
-            />
-          </Switch>
+class App extends Component {
+  state = {
+    myLocations: "",
+    searchResult: ""
+  };
+  componentDidMount() {
+    if (window.localStorage.cities) {
+    }
+  }
+  onSubmit = searchQuery => {
+    if (searchQuery) {
+      this.fetchCurrentWeather(searchQuery);
+    }
+  };
+  fetchCurrentWeather = location => {
+    const APIKey = "ed63ab6e517fbb4dbbf4444d70356ca0";
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${APIKey}`
+    )
+      .then(res => res.json())
+      .then(result => {
+        console.log(result);
+      });
+  };
+  fetchWeatherForecast = location => {};
+  render() {
+    const savedLocations = this.state.myLocations;
+    return (
+      <div className="indexWrap">
+        <header className="indexHeader">
+          <Navigation />
         </header>
+        <div className="indexBody">
+          {!savedLocations && <h1>Add a City!</h1>}
+          <SearchForm handleSubmit={this.onSubmit} />
+          <h2>{this.state.searchResult}</h2>
+        </div>
       </div>
-    </Router>
-  );
+    );
+  }
 }
 
 export default App;
