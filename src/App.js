@@ -6,20 +6,30 @@ import "./App.css";
 
 class App extends Component {
   state = {
-    myLocations: "",
+    myLocations: [],
     searchError: "",
     searchResult: ""
   };
   componentDidMount() {
-    if (window.localStorage.cities) {
+    if (window.localStorage.length) {
+      let keys = Object.keys(localStorage);
+      for (let key of keys) {
+        console.log(`${key}: ${localStorage.getItem(key)}`);
+      }
     }
   }
   onSubmit = searchQuery => {
     if (searchQuery) {
       this.fetchCurrentWeather(searchQuery);
-    } else {
     }
   };
+
+  saveToMyLocations = location => {
+    const storage = window.localStorage;
+    storage.setItem(location.id, JSON.stringify(location));
+    console.log(storage.getItem(location.id));
+  };
+
   fetchCurrentWeather = location => {
     const APIKey = "ed63ab6e517fbb4dbbf4444d70356ca0";
     fetch(
@@ -51,7 +61,9 @@ class App extends Component {
           {!savedLocations && <h1>Search for a City!</h1>}
           <SearchForm handleSubmit={this.onSubmit} />
           {searchError && <h2>{searchError}</h2>}
-          {searchResult && <City city={searchResult} />}
+          {searchResult && (
+            <City city={searchResult} saveLocation={this.saveToMyLocations} />
+          )}
         </div>
       </div>
     );
