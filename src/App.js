@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Navigation from "./components/Navigation";
 import SearchForm from "./components/SearchForm";
+import City from "./components/City";
 import "./App.css";
 
 class App extends Component {
@@ -30,15 +31,17 @@ class App extends Component {
           this.setState({
             searchError: "City not found, check the input and try again."
           });
-        } else console.log(result);
-        this.setState({
-          searchResult: result
-        });
+        } else {
+          this.setState({
+            searchResult: result,
+            searchError: ""
+          });
+        }
       });
   };
   fetchWeatherForecast = location => {};
   render() {
-    const savedLocations = this.state.myLocations;
+    const { savedLocations, searchError, searchResult } = this.state;
     return (
       <div className="indexWrap">
         <header className="indexHeader">
@@ -47,11 +50,8 @@ class App extends Component {
         <div className="indexBody">
           {!savedLocations && <h1>Search for a City!</h1>}
           <SearchForm handleSubmit={this.onSubmit} />
-          {this.state.searchError ? (
-            <h2>{this.state.searchError}</h2>
-          ) : (
-            <h2>{this.state.searchResult.name}</h2>
-          )}
+          {searchError && <h2>{searchError}</h2>}
+          {searchResult && <City city={searchResult} />}
         </div>
       </div>
     );
