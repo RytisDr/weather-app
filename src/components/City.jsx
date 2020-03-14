@@ -11,9 +11,6 @@ import {
 
 export default class City extends Component {
   state = { homeCity: this.props.city.id };
-
-  componentDidMount() {}
-
   pickIcon = weather => {
     const iconSize = 50;
     const iconColor = "#000";
