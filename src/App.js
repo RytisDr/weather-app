@@ -4,7 +4,6 @@ import MyLocations from "./pages/MyLocations";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import City from "./components/City";
 import "./App.css";
-
 class App extends Component {
   state = {
     searchError: "",
@@ -23,8 +22,8 @@ class App extends Component {
   };
 
   fetchCurrentWeather = (location, id) => {
-    const APIKey = "ed63ab6e517fbb4dbbf4444d70356ca0";
     let endpoint;
+    const APIKey = process.env.REACT_APP_WEATHER_API_KEY;
     //from search input
     if (location) {
       endpoint = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${APIKey}&units=metric`;
