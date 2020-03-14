@@ -10,7 +10,9 @@ import {
 } from "weather-icons-react";
 
 export default class City extends Component {
-  state = {};
+  state = { homeCity: this.props.city.id };
+
+  componentDidMount() {}
 
   pickIcon = weather => {
     const iconSize = 50;
@@ -43,9 +45,10 @@ export default class City extends Component {
     if (storage.getItem("myLocations")) {
       const myLocations = storage.getItem("myLocations");
       locationsArr = JSON.parse(myLocations);
-      const match = locationsArr.find(city => city.id === location.id);
-      if (!match) {
+      const found = locationsArr.find(city => city.id === location.id);
+      if (!found) {
         locationsArr.push(location);
+        this.setState({ myLocations: locationsArr });
         storage.setItem("myLocations", JSON.stringify(locationsArr));
       }
     }
@@ -73,20 +76,13 @@ export default class City extends Component {
       return false;
     }
   };
-  checkIfHomeCity = id => {
-    if (window.localStorage.getItem("homeCity") === id.toString()) {
-      return true;
-    } else {
-      return false;
-    }
-  };
   hideButton = event => {
     event.target.style.display = "none";
   };
   render() {
-    console.log("render");
     const { id, name, sys, main, weather, wind } = this.props.city;
     const city = { name: name, country: sys.country, id: id };
+    const { homeCity } = this.state;
     const icon = this.pickIcon(weather[0].main);
     return (
       <div className="cityCont">
@@ -108,11 +104,10 @@ export default class City extends Component {
             Save to my Locations
           </button>
         )}
-        {!this.checkIfHomeCity(city.id) && (
+        {homeCity !== city.id && (
           <button
             onClick={() => {
               this.setHomeCity(city.id);
-              this.checkIfHomeCity(city.id);
             }}
           >
             Set as Home
