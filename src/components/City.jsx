@@ -11,9 +11,7 @@ import {
 
 export default class City extends Component {
   state = {};
-  removeButton = event => {
-    event.target.remove();
-  };
+
   pickIcon = weather => {
     const iconSize = 50;
     const iconColor = "#000";
@@ -40,23 +38,56 @@ export default class City extends Component {
   };
   saveToMyLocations = location => {
     const storage = window.localStorage;
+    let locationsArr = [];
+    //if myLocations already exists in Local Storage
     if (storage.getItem("myLocations")) {
       const myLocations = storage.getItem("myLocations");
-      const locationsObj = JSON.parse(myLocations);
-    } else {
-      storage.setItem("myLocations", JSON.stringify(location));
+      locationsArr = JSON.parse(myLocations);
+      const match = locationsArr.find(city => city.id === location.id);
+      if (!match) {
+        locationsArr.push(location);
+        storage.setItem("myLocations", JSON.stringify(locationsArr));
+      }
+    }
+    //if myLocations does not exist in Local Storage yet
+    else {
+      locationsArr.push(location);
+      storage.setItem("myLocations", JSON.stringify(locationsArr));
     }
   };
   setHomeCity = id => {
     const storage = window.localStorage;
     storage.setItem("homeCity", id);
+    this.setState({ homeCity: id });
+  };
+  checkIfMyLocation = id => {
+    if (window.localStorage.getItem("myLocations")) {
+      const myLocationsArr = JSON.parse(
+        window.localStorage.getItem("myLocations")
+      );
+      const match = myLocationsArr.find(city => city.id === id);
+      if (match) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  };
+  checkIfHomeCity = id => {
+    if (window.localStorage.getItem("homeCity") === id.toString()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  hideButton = event => {
+    event.target.style.display = "none";
   };
   render() {
-    //console.log(this.props.city);
+    console.log("render");
     const { id, name, sys, main, weather, wind } = this.props.city;
     const city = { name: name, country: sys.country, id: id };
     const icon = this.pickIcon(weather[0].main);
-    const myLocations = window.localStorage.getItem("myLocations");
     return (
       <div className="cityCont">
         <h1>{city.name + ", " + city.country} Currently:</h1>
@@ -66,22 +97,22 @@ export default class City extends Component {
         <h2>Feels Like: {Math.round(main.feels_like)} C</h2>
         <h2>Wind: {wind.speed} km/h</h2>
 
-        {!window.localStorage[city.id] && (
+        {!this.checkIfMyLocation(city.id) && (
           <button
             onClick={event => {
               this.saveToMyLocations(city);
-              this.removeButton(event);
+              this.hideButton(event);
             }}
-            id="addCityBtn"
+            id="setMyLocationBtn"
           >
             Save to my Locations
           </button>
         )}
-        {window.localStorage.getItem("homeCity") !== city.id.toString() && (
+        {!this.checkIfHomeCity(city.id) && (
           <button
-            onClick={event => {
+            onClick={() => {
               this.setHomeCity(city.id);
-              this.removeButton(event);
+              this.checkIfHomeCity(city.id);
             }}
           >
             Set as Home

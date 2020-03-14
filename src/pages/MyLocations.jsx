@@ -7,7 +7,7 @@ export default class MyLocations extends Component {
   };
   componentDidMount() {
     let keys = Object.keys(localStorage);
-    let citiesArr = [];
+    //let citiesArr = [];
     if (keys) {
       for (let key of keys) {
         //replace with forEach

@@ -48,19 +48,20 @@ class App extends Component {
       });
   };
   render() {
-    const { savedLocations, searchError, queryResult } = this.state;
+    const { searchError, queryResult } = this.state;
     return (
       <Router>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/My-Locations">My Locations</Link>
-        </nav>
+        <header>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/My-Locations">My Locations</Link>
+          </nav>
+        </header>
         <Switch>
           <Route exact path="/">
             <div className="indexWrap">
-              <header className="indexHeader"></header>
               <div className="indexBody">
-                {!savedLocations && <h1>Search for a City!</h1>}
+                <h1>Search for a City!</h1>
                 <SearchForm handleSubmit={this.onSubmit} />
                 {searchError && <h2>{searchError}</h2>}
                 {queryResult && <City city={queryResult} />}
