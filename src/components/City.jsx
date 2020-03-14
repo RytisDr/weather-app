@@ -81,7 +81,7 @@ export default class City extends Component {
     const city = { name: name, country: sys.country, id: id };
     const { homeCity } = this.state;
     const icon = this.pickIcon(weather[0].main);
-    const isMyLocation = this.checkIfMyLocation(city.id);
+    const isMyLocaiton = this.checkIfMyLocation(city.id);
     return (
       <div className="cityCont">
         <h1>{city.name + ", " + city.country} Currently:</h1>
@@ -91,7 +91,7 @@ export default class City extends Component {
         <h2>Feels Like: {Math.round(main.feels_like)} C</h2>
         <h2>Wind: {wind.speed} km/h</h2>
 
-        {!isMyLocation && (
+        {!isMyLocaiton && (
           <button
             onClick={event => {
               this.saveToMyLocations(city);
