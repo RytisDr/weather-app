@@ -28,20 +28,23 @@ export default class MyLocations extends Component {
       });
   };
   removeLocation = id => {
+    //REMOVE FROM LOCAL STORAGE
+    const storageCities = window.localStorage.getItem("myLocations");
+    const storageJSON = JSON.parse(storageCities);
+    const lStorageIndex = storageJSON.findIndex(city => city.id === id);
+    storageJSON.splice(lStorageIndex, 1);
+    window.localStorage.setItem("myLocations", JSON.stringify(storageJSON));
+    //REMOVE FROM STATE
     const cities = this.state.cities;
-    const match = cities.find(city => city.id === id);
-    //const index = Object.keys(cities).indexOf(match);
-    console.log(match);
+    const stateIndex = cities.findIndex(city => city.id === id);
+    cities.splice(stateIndex, 1);
+    this.setState({ cities: cities });
   };
   render() {
-    const cities = this.state.cities;
-    console.log(cities);
-    const localStorage = window.localStorage;
+    const { cities } = this.state;
     return (
       <div className="myLocationsWrap">
-        {!localStorage.getItem("myLocations") && (
-          <h1>Add a Location from Home.</h1>
-        )}
+        {!cities.length && <h1>Add a Location from Home.</h1>}
         {cities.map(city => {
           return (
             <div key={city.id}>
