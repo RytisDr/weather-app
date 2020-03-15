@@ -9,7 +9,7 @@ export default class MyLocations extends Component {
       cities: [],
       loading: true
     };
-    this._isMounted = false; // to fix memory leak
+    this._isMounted = false; // to fix possible memory leak
   }
 
   componentDidMount() {
@@ -22,7 +22,7 @@ export default class MyLocations extends Component {
     }
   }
   componentWillUnmount() {
-    this._isMounted = false; // to fix memory leak
+    this._isMounted = false; // to fix possible memory leak
   }
   fetchCities = id => {
     const APIKey = process.env.REACT_APP_WEATHER_API_KEY;
@@ -72,7 +72,7 @@ export default class MyLocations extends Component {
             </div>
           );
         })}
-        <Route path={`/city/:cidyId`} component={LocationPage} />
+        <Route path={`/city/:id`} component={LocationPage} />
       </div>
     );
   }

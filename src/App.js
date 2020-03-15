@@ -74,7 +74,7 @@ class App extends Component {
             path="/my-locations"
             component={props => <MyLocations {...props} />}
           ></Route>
-          <Route path={`/city/:cidyId`} component={LocationPage} />
+          <Route path={`/city/:id`} component={LocationPage} />
         </Switch>
       </Router>
     );
