@@ -38,7 +38,9 @@ export default class Location extends Component {
             {forecast.list.map(e => (
               <div className="timeTemp" key={e.dt}>
                 <h3>{e.dt_txt}</h3>
-                <p>{Math.round(e.main.temp)}</p>
+                <p>{Math.round(e.main.temp)} °C</p>
+                <p>Feels like: {Math.round(e.main.feels_like)} °C</p>
+                <p>{e.weather[0].description}</p>
               </div>
             ))}
           </div>

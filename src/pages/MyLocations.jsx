@@ -62,8 +62,8 @@ export default class MyLocations extends Component {
               <Link key={city.id} className="cityLink" to={`/city/${city.id}`}>
                 <h1>{city.name + ", " + city.sys.country} Currently:</h1>
                 <h2>{city.weather[0].description}</h2>
-                <h2>{Math.round(city.main.temp)} C</h2>
-                <h2>Feels Like: {Math.round(city.main.feels_like)} C</h2>
+                <h2>{Math.round(city.main.temp)} °C</h2>
+                <h2>Feels Like: {Math.round(city.main.feels_like)} °C</h2>
                 <h2>Wind: {city.wind.speed} km/h</h2>
               </Link>
               <button onClick={() => this.removeLocation(city.id)}>

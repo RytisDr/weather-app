@@ -1,7 +1,18 @@
+a {
+  margin: 20px;
+}
 .cityLink {
   text-decoration: none;
   color: initial;
 }
 .cityCont:hover {
   background-color: lightgrey;
+}
+.timeTemp {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.timeTemp h3 {
+  grid-column: 1 / span 3;
 }
