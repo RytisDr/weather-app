@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import SearchForm from "./components/SearchForm";
 import MyLocations from "./pages/MyLocations";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import LocationPage from "./pages/Location";
 import City from "./components/City";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
+
 class App extends Component {
   state = {
     searchError: "",
@@ -72,6 +74,7 @@ class App extends Component {
             path="/My-Locations"
             component={props => <MyLocations {...props} />}
           ></Route>
+          <Route path={`/city/:cidyId`} component={LocationPage} />
         </Switch>
       </Router>
     );

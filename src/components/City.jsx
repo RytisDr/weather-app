@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   WiSnow,
   WiDaySunny,
@@ -84,13 +85,14 @@ export default class City extends Component {
     const isMyLocaiton = this.checkIfMyLocation(city.id);
     return (
       <div className="cityCont">
-        <h1>{city.name + ", " + city.country} Currently:</h1>
-        <h2>{weather[0].description}</h2>
-        {icon}
-        <h2>{Math.round(main.temp)} C</h2>
-        <h2>Feels Like: {Math.round(main.feels_like)} C</h2>
-        <h2>Wind: {wind.speed} km/h</h2>
-
+        <Link className="cityLink" to={`/city/${city.id}`}>
+          <h1>{city.name + ", " + city.country} Currently:</h1>
+          <h2>{weather[0].description}</h2>
+          {icon}
+          <h2>{Math.round(main.temp)} C</h2>
+          <h2>Feels Like: {Math.round(main.feels_like)} C</h2>
+          <h2>Wind: {wind.speed} km/h</h2>
+        </Link>
         {!isMyLocaiton && (
           <button
             onClick={event => {
@@ -110,7 +112,7 @@ export default class City extends Component {
           >
             Set as Home
           </button>
-        )}
+        )}{" "}
       </div>
     );
   }
