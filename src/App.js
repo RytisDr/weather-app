@@ -56,7 +56,7 @@ class App extends Component {
         <header>
           <nav>
             <Link to="/">Home</Link>
-            <Link to="/My-Locations">My Locations</Link>
+            <Link to="/my-locations">My Locations</Link>
           </nav>
         </header>
         <Switch>
@@ -71,7 +71,7 @@ class App extends Component {
             </div>
           </Route>
           <Route
-            path="/My-Locations"
+            path="/my-locations"
             component={props => <MyLocations {...props} />}
           ></Route>
           <Route path={`/city/:cidyId`} component={LocationPage} />

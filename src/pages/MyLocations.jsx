@@ -3,10 +3,15 @@ import { BrowserRouter as Route, Link } from "react-router-dom";
 import LocationPage from "../pages/Location";
 import "../App.css";
 export default class MyLocations extends Component {
-  state = {
-    cities: [],
-    loading: true
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      cities: [],
+      loading: true
+    };
+    this._isMounted = false; // to fix memory leak
+  }
+
   componentDidMount() {
     if (window.localStorage.getItem("myLocations")) {
       const cities = window.localStorage.getItem("myLocations");
@@ -16,9 +21,9 @@ export default class MyLocations extends Component {
       });
     }
   }
-  /*   componentWillUnmount() { Does not fix "Can't perform a React state update on an unmounted component."
-    this._isMounted = false;
-  } */
+  componentWillUnmount() {
+    this._isMounted = false; // to fix memory leak
+  }
   fetchCities = id => {
     const APIKey = process.env.REACT_APP_WEATHER_API_KEY;
     fetch(
