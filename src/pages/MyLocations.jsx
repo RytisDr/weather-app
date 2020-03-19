@@ -16,23 +16,24 @@ export default class MyLocations extends Component {
     if (window.localStorage.getItem("myLocations")) {
       const cities = window.localStorage.getItem("myLocations");
       const citiesJSON = JSON.parse(cities);
+      const IDArray = [];
       citiesJSON.forEach(city => {
-        this.fetchCities(city.id);
+        IDArray.push(city.id);
       });
+      this.fetchCities(IDArray);
     }
   }
   componentWillUnmount() {
     this._isMounted = false; // to fix possible memory leak
   }
-  fetchCities = id => {
+  fetchCities = IDgroup => {
     const APIKey = process.env.REACT_APP_WEATHER_API_KEY;
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?id=${id}&appid=${APIKey}&units=metric`
+      `https://api.openweathermap.org/data/2.5/group?id=${IDgroup}&appid=${APIKey}&units=metric` //the limit is 20 locations at a time
     )
       .then(res => res.json())
-      .then(city => {
-        let joined = this.state.cities.concat(city);
-        this.setState({ cities: joined });
+      .then(result => {
+        this.setState({ cities: result.list });
       });
   };
   removeLocation = id => {
